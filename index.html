@@ -11,7 +11,7 @@
         
         .loading-bar { 
             position: absolute; top: 0; left: 0; width: 0%; height: 4px; 
-            background: #0b57d0; transition: width 0.4s ease; display: none; z-index: 10; 
+            background: #0b57d0; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); display: none; z-index: 10; 
         }
 
         .viewport { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
@@ -36,7 +36,6 @@
             display: flex; justify-content: center; align-items: center; font-size: 12px; 
         }
 
-        /* Large Cheese Icon */
         .cheese-icon { font-size: 48px; margin-bottom: 24px; display: block; }
 
         .field-wrapper { position: relative; margin-bottom: 8px; }
@@ -68,8 +67,8 @@
 </head>
 <body>
 
-    <div class="viewport">
-        <main class="auth-card">
+    <div class="viewport" id="main-viewport">
+        <main class="auth-card" id="auth-card">
             <div class="loading-bar" id="loader"></div>
             <header class="card-header">
                 <svg viewBox="0 0 24 24" width="20" height="20">
@@ -93,7 +92,7 @@
 
                 <div class="action-pane">
                     <div class="field-wrapper" id="input-container">
-                        <input type="password" id="password-input" placeholder=" " required autofocus>
+                        <input type="password" id="password-input" placeholder=" " required autofocus autocomplete="current-password">
                         <label for="password-input">Enter your password</label>
                     </div>
                     <div class="error-text" id="error-msg">
@@ -101,15 +100,15 @@
                         Invalid credentials. Try again.
                     </div>
                     <div class="button-row">
-                        <button class="btn-secondary">Forgot password?</button>
-                        <button class="btn-primary" id="continue-btn">Next</button>
+                        <button class="btn-secondary" type="button">Forgot password?</button>
+                        <button class="btn-primary" id="continue-btn" type="button">Next</button>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <script>
+<script>
         const passInput = document.getElementById('password-input');
         const container = document.getElementById('input-container');
         const errorMsg = document.getElementById('error-msg');
@@ -118,37 +117,78 @@
 
         const RAW_URL = "https://raw.githubusercontent.com/failedrifle/math/main/index.html";
 
-        btn.addEventListener('click', () => {
+        async function handleLogin() {
+            // Check if the password is correct
             if (passInput.value === 'abc') {
+                // 1. Start the loading animation
                 loader.style.display = 'block';
-                setTimeout(() => loader.style.width = '100%', 50);
+                setTimeout(() => { loader.style.width = '100%'; }, 10);
 
-                fetch(RAW_URL)
-                    .then(r => r.text())
-                    .then(html => {
-                        setTimeout(() => {
-                            const newWindow = window.open("about:blank", "_blank");
-                            if (newWindow) {
-                                newWindow.document.open();
-                                newWindow.document.write(html);
-                                newWindow.document.close();
-                            }
-                            window.close();
-                        }, 450);
-                    })
-                    .catch(e => {
-                        alert("Network error: Could not load CheddarOS core.");
-                    });
+                try {
+                    // 2. Fetch the content for the new tab
+                    const response = await fetch(RAW_URL);
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    const htmlContent = await response.text();
 
+                    // 3. Open a new blank tab
+                    const newTab = window.open('about:blank', '_blank');
+
+                    // 4. Wait for the animation to finish to "feel" like a login
+                    setTimeout(() => {
+                        // Inject content into the new tab
+                        if (newTab) {
+                            newTab.document.open();
+                            newTab.document.write(htmlContent);
+                            newTab.document.close();
+                        } else {
+                            alert("Pop-up blocked! Please allow pop-ups for CheddarOS.");
+                        }
+
+                        // 5. Reset the current page to look like a fresh login
+                        resetOriginalPage();
+                    }, 850);
+
+                } catch (err) {
+                    console.error("Failed to load content:", err);
+                    resetOriginalPage();
+                }
             } else {
+                // Wrong password feedback
                 container.classList.add('has-error');
                 errorMsg.style.display = 'flex';
                 passInput.value = '';
                 passInput.focus();
             }
+        }
+
+        function resetOriginalPage() {
+            // Clear input and remove errors
+            passInput.value = '';
+            container.classList.remove('has-error');
+            errorMsg.style.display = 'none';
+            
+            // Reset and hide the loader
+            loader.style.width = '0%';
+            setTimeout(() => { 
+                loader.style.display = 'none'; 
+            }, 400);
+            
+            passInput.focus();
+        }
+
+        // Button Click Event
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleLogin();
         });
 
-        passInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') btn.click(); });
+        // Enter Key Event
+        passInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleLogin();
+            }
+        });
     </script>
 </body>
 </html>
