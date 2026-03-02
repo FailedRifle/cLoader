@@ -16,6 +16,26 @@ body {
     padding: 20px;
 }
 
+.avatar-sm {
+    width: 24px;
+    height: 24px;
+    background: #FFD700;
+    color: #5D4037;
+    font-weight: bold;
+    border-radius: 50%;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+}
+
+.btn-primary.loading {
+    background: #a0a0a0;
+    cursor: wait;
+    pointer-events: none;
+}
+
 .auth-card {
     background-color: #ffffff;
     width: 100%;
