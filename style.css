@@ -1,8 +1,8 @@
 * { box-sizing: border-box; }
 
 body {
-    background-color: #131313;
-    color: #e3e3e3;
+    background-color: #f0f2f1; /* Light gray background */
+    color: #1f1f1f;
     font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
 }
@@ -17,11 +17,12 @@ body {
 }
 
 .auth-card {
-    background-color: #1f1f1f;
+    background-color: #ffffff;
     width: 100%;
     max-width: 1040px;
     border-radius: 28px;
-    overflow: hidden; /* Clips the header border */
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .card-header {
@@ -30,7 +31,8 @@ body {
     gap: 12px;
     padding: 24px 36px;
     font-size: 14px;
-    border-bottom: 1px solid #333; /* Matches your screenshot's subtle divider */
+    border-bottom: 1px solid #e3e3e3;
+    color: #444746;
 }
 
 .content-area {
@@ -41,18 +43,16 @@ body {
 }
 
 /* Left Pane */
-.blooket-logo {
-    background-color: #00d2ff;
+.placeholder-logo {
+    background-color: #f0f2f1;
     width: 48px;
     height: 48px;
     border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 32px;
-    font-weight: 900;
-    color: white;
     margin-bottom: 24px;
+    border: 1px solid #dcdcdc;
 }
 
 h1 {
@@ -60,21 +60,24 @@ h1 {
     font-weight: 400;
     line-height: 1.2;
     margin: 0 0 24px 0;
+    color: #1f1f1f;
 }
 
 .user-pill {
     display: inline-flex;
     align-items: center;
     padding: 4px 12px 4px 6px;
-    border: 1px solid #444746;
+    border: 1px solid #dcdcdc;
     border-radius: 20px;
     font-size: 14px;
+    color: #444746;
 }
 
 .avatar-sm {
     width: 24px;
     height: 24px;
-    background: #5f6368;
+    background: #0b57d0; /* Standard blue avatar */
+    color: white;
     border-radius: 50%;
     margin-right: 10px;
     display: flex;
@@ -92,21 +95,21 @@ h1 {
 input {
     width: 100%;
     background: transparent;
-    border: 1px solid #444746;
+    border: 1px solid #747775;
     padding: 16px;
     border-radius: 4px;
-    color: white;
+    color: #1f1f1f;
     font-size: 16px;
     outline: none;
 }
 
-input:focus { border: 2px solid #8ab4f8; }
+input:focus { border: 2px solid #0b57d0; }
 
 label {
     position: absolute;
     left: 16px;
     top: 16px;
-    color: #9aa0a6;
+    color: #444746;
     transition: 0.2s ease all;
     pointer-events: none;
 }
@@ -116,21 +119,22 @@ input:not(:placeholder-shown) ~ label {
     top: -10px;
     left: 10px;
     font-size: 12px;
-    background: #1f1f1f;
+    background: #ffffff;
     padding: 0 4px;
-    color: #8ab4f8;
+    color: #0b57d0;
 }
 
 .policy-links p {
     font-size: 12px;
-    color: #c4c7c5;
+    color: #444746;
     line-height: 1.6;
     margin-bottom: 12px;
 }
 
 .policy-links a {
-    color: #8ab4f8;
+    color: #0b57d0;
     text-decoration: none;
+    font-weight: 500;
 }
 
 .button-row {
@@ -150,15 +154,19 @@ button {
 
 .btn-secondary {
     background: transparent;
-    border: 1px solid #444746;
-    color: #8ab4f8;
+    border: none;
+    color: #0b57d0;
 }
 
+.btn-secondary:hover { background-color: #f1f3f4; }
+
 .btn-primary {
-    background: #8ab4f8;
+    background: #0b57d0;
     border: none;
-    color: #000;
+    color: #fff;
 }
+
+.btn-primary:hover { background: #0842a0; }
 
 /* Footer Section */
 .system-footer {
@@ -168,11 +176,11 @@ button {
     justify-content: space-between;
     padding: 24px 0;
     font-size: 12px;
-    color: #9aa0a6;
+    color: #444746;
 }
 
 .footer-nav a {
-    color: #9aa0a6;
+    color: #444746;
     text-decoration: none;
     margin-left: 24px;
 }
