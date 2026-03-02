@@ -5,7 +5,187 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign in - Google Accounts</title>
     <link rel="icon" type="image/x-icon" href="https://www.google.com/favicon.ico">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Existing Styles + Cheese & Loading Updates */
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: #f0f2f1;
+            color: #1f1f1f;
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+        }
+
+        .viewport {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 1040px;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 24px 36px;
+            font-size: 14px;
+            border-bottom: 1px solid #e3e3e3;
+            color: #444746;
+        }
+
+        .content-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            padding: 40px 36px 48px 36px;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 400;
+            line-height: 1.2;
+            margin: 0 0 24px 0;
+            color: #1f1f1f;
+        }
+
+        .user-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px 4px 6px;
+            border: 1px solid #dcdcdc;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #444746;
+        }
+
+        /* --- THE CHEESE ICON --- */
+        .avatar-sm {
+            width: 24px;
+            height: 24px;
+            background: #FFD700; /* Cheese Yellow */
+            color: #5D4037;    /* Brown text for a 'rinded' look */
+            font-weight: bold;
+            border-radius: 50%;
+            margin-right: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            box-shadow: inset -2px -2px 0px rgba(0,0,0,0.1); /* Subtle depth */
+        }
+
+        .field-wrapper {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        input {
+            width: 100%;
+            background: transparent;
+            border: 1px solid #747775;
+            padding: 16px;
+            border-radius: 4px;
+            color: #1f1f1f;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus { border: 2px solid #0b57d0; }
+
+        label {
+            position: absolute;
+            left: 16px;
+            top: 16px;
+            color: #444746;
+            transition: 0.2s ease all;
+            pointer-events: none;
+        }
+
+        input:focus ~ label,
+        input:not(:placeholder-shown) ~ label {
+            top: -10px;
+            left: 10px;
+            font-size: 12px;
+            background: #ffffff;
+            padding: 0 4px;
+            color: #0b57d0;
+        }
+
+        .policy-links p {
+            font-size: 12px;
+            color: #444746;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .policy-links a {
+            color: #0b57d0;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 40px;
+        }
+
+        button {
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: none;
+            color: #0b57d0;
+        }
+
+        .btn-primary {
+            background: #0b57d0;
+            border: none;
+            color: #fff;
+        }
+
+        /* --- FAKE LOADING STATE --- */
+        .btn-primary.loading {
+            background: #747775;
+            cursor: wait;
+            opacity: 0.7;
+        }
+
+        .system-footer {
+            width: 100%;
+            max-width: 1040px;
+            display: flex;
+            justify-content: space-between;
+            padding: 24px 0;
+            font-size: 12px;
+            color: #444746;
+        }
+
+        .footer-nav a {
+            color: #444746;
+            text-decoration: none;
+            margin-left: 24px;
+        }
+    </style>
 </head>
 <body>
     <div class="viewport">
@@ -22,12 +202,12 @@
 
             <div class="content-area">
                 <div class="identity-pane">
-                    <div class="blooket-logo">B</div>
+                    <div style="background:#f0f2f1; width:48px; height:48px; border-radius:8px; display:flex; justify-content:center; align-items:center; margin-bottom:24px; border:1px solid #dcdcdc; font-weight:bold; color:#555;">B</div>
                     <h1>You’re signing back in to CheddarOS</h1>
                     <div class="user-pill">
                         <div class="avatar-sm">C</div>
                         <span class="email-text">cheddarOS@gmail.com</span>
-                        <svg class="dropdown-arrow" viewBox="0 0 24 24" width="16"><path d="M7 10l5 5 5-5z" fill="#e3e3e3"/></svg>
+                        <svg class="dropdown-arrow" viewBox="0 0 24 24" width="16"><path d="M7 10l5 5 5-5z" fill="#444746"/></svg>
                     </div>
                 </div>
 
@@ -40,12 +220,11 @@
                     <div class="policy-links">
                         <p>Review CheddarOS’s <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a> to understand how CheddarOS will process and protect your data.</p>
                         <p>To make changes at any time, go to your <a href="#">Google Account</a>.</p>
-                        <p>Learn more about <a href="#">Sign in with Google</a>.</p>
                     </div>
 
                     <div class="button-row">
-                        <button class="btn-secondary">Cancel</button>
-                        <button class="btn-primary">Continue</button>
+                        <button class="btn-secondary" onclick="location.reload()">Cancel</button>
+                        <button class="btn-primary" id="continue-btn">Continue</button>
                     </div>
                 </div>
             </div>
@@ -60,5 +239,40 @@
             </nav>
         </footer>
     </div>
+
+    <script>
+        const passwordInput = document.getElementById('password-input');
+        const continueBtn = document.getElementById('continue-btn');
+
+        continueBtn.addEventListener('click', () => {
+            const password = passwordInput.value;
+
+            if (password === 'abc') {
+                // Change button state
+                continueBtn.innerText = 'Verifying...';
+                continueBtn.classList.add('loading');
+                passwordInput.disabled = true;
+
+                // Fake the delay
+                setTimeout(() => {
+                    // Revert UI or Redirect
+                    alert('Access Granted to CheddarOS!');
+                    continueBtn.innerText = 'Continue';
+                    continueBtn.classList.remove('loading');
+                    passwordInput.disabled = false;
+                    passwordInput.value = '';
+                }, 2500);
+            } else {
+                alert('Wrong password! Hint: It is "abc"');
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        });
+
+        // Allow pressing "Enter" to submit
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') continueBtn.click();
+        });
+    </script>
 </body>
 </html>
