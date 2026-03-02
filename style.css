@@ -1,82 +1,112 @@
-:root {
-    --bg-color: #ffffff;
-    --card-border: #dadce0;
-    --text-main: #202124;
-    --text-sub: #5f6368;
-    --google-blue: #1a73e8;
-    --google-blue-hover: #1765cc;
-    --error-red: #d93025;
-}
+* { box-sizing: border-box; }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    font-family: 'Roboto', arial, sans-serif;
+    background-color: #131313;
+    color: #e3e3e3;
+    font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
+}
+
+.viewport {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     min-height: 100vh;
+    padding: 20px;
 }
 
 .auth-card {
-    background-color: #fff;
-    border: 1px solid var(--card-border);
+    background-color: #1f1f1f;
+    width: 100%;
+    max-width: 1040px;
+    border-radius: 28px;
+    overflow: hidden; /* Clips the header border */
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 24px 36px;
+    font-size: 14px;
+    border-bottom: 1px solid #333; /* Matches your screenshot's subtle divider */
+}
+
+.content-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    padding: 40px 36px 48px 36px;
+}
+
+/* Left Pane */
+.blooket-logo {
+    background-color: #00d2ff;
+    width: 48px;
+    height: 48px;
     border-radius: 8px;
-    width: 100%;
-    max-width: 450px;
-    padding: 48px 40px 36px;
-    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 24px;
 }
 
-/* Header Typography */
 h1 {
-    font-size: 24px;
+    font-size: 36px;
     font-weight: 400;
-    line-height: 1.3333;
-    margin-top: 16px;
-    margin-bottom: 8px;
-    text-align: center;
+    line-height: 1.2;
+    margin: 0 0 24px 0;
 }
 
-.sub-header {
-    font-size: 16px;
-    color: var(--text-main);
-    text-align: center;
-    margin-bottom: 40px;
+.user-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px 4px 6px;
+    border: 1px solid #444746;
+    border-radius: 20px;
+    font-size: 14px;
 }
 
-/* Password Input Styling */
-.input-container {
+.avatar-sm {
+    width: 24px;
+    height: 24px;
+    background: #5f6368;
+    border-radius: 50%;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+}
+
+/* Right Pane */
+.field-wrapper {
     position: relative;
-    margin-bottom: 8px;
-    width: 100%;
+    margin-bottom: 24px;
 }
 
-input[type="password"] {
+input {
     width: 100%;
-    padding: 13px 15px;
-    font-size: 16px;
-    border: 1px solid var(--card-border);
+    background: transparent;
+    border: 1px solid #444746;
+    padding: 16px;
     border-radius: 4px;
+    color: white;
+    font-size: 16px;
     outline: none;
-    box-sizing: border-box;
 }
 
-input[type="password"]:focus {
-    border: 2px solid var(--google-blue);
-    padding: 12px 14px; /* Offset for border thickness */
-}
+input:focus { border: 2px solid #8ab4f8; }
 
-/* Floating Label Logic */
 label {
     position: absolute;
-    left: 12px;
-    top: 13px;
-    color: var(--text-sub);
-    background: #fff;
-    padding: 0 4px;
+    left: 16px;
+    top: 16px;
+    color: #9aa0a6;
     transition: 0.2s ease all;
     pointer-events: none;
 }
@@ -84,50 +114,65 @@ label {
 input:focus ~ label,
 input:not(:placeholder-shown) ~ label {
     top: -10px;
+    left: 10px;
     font-size: 12px;
-    color: var(--google-blue);
+    background: #1f1f1f;
+    padding: 0 4px;
+    color: #8ab4f8;
 }
 
-/* Buttons */
+.policy-links p {
+    font-size: 12px;
+    color: #c4c7c5;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.policy-links a {
+    color: #8ab4f8;
+    text-decoration: none;
+}
+
 .button-row {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
     margin-top: 40px;
 }
 
-.btn-text {
-    color: var(--google-blue);
-    font-weight: 500;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-}
-
-.btn-filled {
-    background-color: var(--google-blue);
-    color: white;
+button {
     padding: 10px 24px;
-    border: none;
-    border-radius: 4px;
+    border-radius: 20px;
+    font-size: 14px;
     font-weight: 500;
     cursor: pointer;
 }
 
-.btn-filled:hover {
-    background-color: var(--google-blue-hover);
+.btn-secondary {
+    background: transparent;
+    border: 1px solid #444746;
+    color: #8ab4f8;
 }
 
-/* Legal & Footer */
-.footer-text {
+.btn-primary {
+    background: #8ab4f8;
+    border: none;
+    color: #000;
+}
+
+/* Footer Section */
+.system-footer {
+    width: 100%;
+    max-width: 1040px;
+    display: flex;
+    justify-content: space-between;
+    padding: 24px 0;
     font-size: 12px;
-    color: var(--text-sub);
-    line-height: 1.5;
-    margin-top: 24px;
+    color: #9aa0a6;
 }
 
-.footer-text a {
-    color: var(--google-blue);
+.footer-nav a {
+    color: #9aa0a6;
     text-decoration: none;
+    margin-left: 24px;
 }
