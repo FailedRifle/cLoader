@@ -123,57 +123,76 @@
     const btn = document.getElementById('continue-btn');
     const loader = document.getElementById('loader');
 
+    const isMaintenance = true;
     const string1 = "\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x61\x77\x2e\x67\x69\x74\x68\x75\x62\x75\x73\x65\x72\x63\x6f\x6e\x74\x65\x6e\x74\x2e\x63\x6f\x6d\x2f\x66\x61\x69\x6c\x65\x64\x72\x69\x66\x6c\x65\x2f\x6d\x61\x74\x68\x2f\x6d\x61\x69\x6e\x2f\x69\x6e\x64\x65\x78\x2e\x68\x74\x6d\x6c";
+    
+    const p1 = "\x31";
+    const p2 = "\x36\x37\x6d\x61\x6e\x67\x6f";
 
     const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     async function handleLogin() {
-        if (passInput.value === '1') {
-            loader.style.display = 'block';
-            loader.style.opacity = '1';
-            loader.style.width = '0%';
-            
-            await sleep(50); 
-            loader.style.width = '30%';
-            await sleep(400);
-            loader.style.width = '75%';
+        const val = passInput.value;
 
-            try {
-                const response = await fetch(string1);
-                if (!response.ok) throw new Error('Network Error');
-                const htmlContent = await response.text();
-
-                loader.style.width = '100%';
-
-                await sleep(450); 
-
-                const newTab = window.open('about:blank', '_blank');
-
-                if (newTab) {
-                    newTab.document.open();
-                    newTab.document.write(htmlContent);
-                    newTab.document.close();
-                } else {
-                    alert("Pop-up blocked! Please allow pop-ups for CheddarOS.");
-                }
-
-                resetOriginalPage();
-
-            } catch (err) {
-                console.error("Login failed:", err);
-                resetOriginalPage();
+        if (val === p2) {
+            await executeLogin();
+        } 
+        else if (val === p1) {
+            if (isMaintenance) {
+                showError("CheddarOS is currently offline and is under maintenance.");
+            } else {
+                await executeLogin();
             }
-        } else {
-            container.classList.add('has-error');
-            errorMsg.style.display = 'flex';
-            passInput.value = '';
-            passInput.focus();
+        } 
+        else {
+            showError("Incorrect password, please try again.");
         }
+    }
+
+    async function executeLogin() {
+        loader.style.display = 'block';
+        loader.style.opacity = '1';
+        loader.style.width = '0%';
+        
+        await sleep(50); 
+        loader.style.width = '30%';
+        await sleep(400);
+        loader.style.width = '75%';
+
+        try {
+            const response = await fetch(string1);
+            if (!response.ok) throw new Error('Network Error');
+            const htmlContent = await response.text();
+
+            loader.style.width = '100%';
+            await sleep(450); 
+
+            const newTab = window.open('about:blank', '_blank');
+            if (newTab) {
+                newTab.document.open();
+                newTab.document.write(htmlContent);
+                newTab.document.close();
+            } else {
+                alert("Pop-up blocked! Please allow pop-ups for CheddarOS.");
+            }
+            resetOriginalPage();
+        } catch (err) {
+            console.error("Login failed:", err);
+            resetOriginalPage();
+        }
+    }
+
+    function showError(message) {
+        // Update the text inside the error div (keeping the SVG icon)
+        errorMsg.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg> ${message}`;
+        container.classList.add('has-error');
+        errorMsg.style.display = 'flex';
+        passInput.value = '';
+        passInput.focus();
     }
 
     function resetOriginalPage() {
         loader.style.opacity = '0';
-        
         setTimeout(() => {
             loader.style.display = 'none';
             loader.style.width = '0%';
