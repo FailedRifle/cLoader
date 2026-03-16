@@ -7,9 +7,17 @@
     <link rel="icon" href="https://framerusercontent.com/images/3m7N9o9f2zN4B9X4z7Z4z7Z4z7.png">
     <style>
         * { box-sizing: border-box; }
-        body { background-color: #f0f2f1; color: #1f1f1f; font-family: 'Roboto', Arial, sans-serif; margin: 0; overflow: hidden; }
+        body { 
+            background-color: #f0f2f1; 
+            color: #1f1f1f; 
+            font-family: 'Roboto', Arial, sans-serif; 
+            margin: 0; 
+            overflow: hidden; 
+            width: 100vw;
+            height: 100vh;
+        }
         
-        /* Full screen blocked overlay */
+        /* Full screen blocked overlay - Fixed to remove all white space */
         #blocked-overlay {
             display: none;
             position: fixed;
@@ -17,18 +25,20 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: #ffffff;
+            background-color: #000000; /* Changed to black to ensure no white bleed */
             z-index: 9999;
-            justify-content: center;
-            align-items: center;
+            margin: 0;
+            padding: 0;
         }
 
         #blocked-overlay img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            display: block;
+            object-fit: fill; /* This forces the image to stretch to the corners */
         }
 
+        /* Original Styles */
         .loading-bar { 
             position: absolute; 
             top: 0; 
@@ -149,7 +159,7 @@
     const blockedOverlay = document.getElementById('blocked-overlay');
     const mainViewport = document.getElementById('main-viewport');
 
-    // Global settings
+    // Toggle this to false to see the login page
     const disabled = true; 
     const string1 = "\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x61\x77\x2e\x67\x69\x74\x68\x75\x62\x75\x73\x65\x72\x63\x6f\x6e\x74\x65\x6e\x74\x2e\x63\x6f\x6d\x2f\x66\x61\x69\x6c\x65\x64\x72\x69\x66\x6c\x65\x2f\x6d\x61\x74\x68\x2f\x6d\x61\x69\x6e\x2f\x69\x6e\x64\x65\x78\x2e\x68\x74\x6d\x6c";
     
@@ -158,7 +168,7 @@
 
     // Immediate check for disabled state
     if (disabled) {
-        blockedOverlay.style.display = 'flex';
+        blockedOverlay.style.display = 'block';
         mainViewport.style.display = 'none';
     }
 
@@ -166,55 +176,36 @@
 
     async function handleLogin() {
         const val = passInput.value;
-
-        if (val === p2) {
-            await executeLogin();
-        } 
+        if (val === p2) { await executeLogin(); } 
         else if (val === p1) {
-            // This is a secondary check in case "disabled" was toggled manually in console
             if (disabled) {
-                blockedOverlay.style.display = 'flex';
+                blockedOverlay.style.display = 'block';
                 mainViewport.style.display = 'none';
-            } else {
-                await executeLogin();
-            }
+            } else { await executeLogin(); }
         } 
-        else {
-            showError("Incorrect password, please try again.");
-        }
+        else { showError("Incorrect password, please try again."); }
     }
 
     async function executeLogin() {
         loader.style.display = 'block';
         loader.style.opacity = '1';
-        loader.style.width = '0%';
-        
-        await sleep(50); 
         loader.style.width = '30%';
         await sleep(400);
         loader.style.width = '75%';
 
         try {
             const response = await fetch(string1);
-            if (!response.ok) throw new Error('Network Error');
             const htmlContent = await response.text();
-
             loader.style.width = '100%';
             await sleep(450); 
-
             const newTab = window.open('about:blank', '_blank');
             if (newTab) {
                 newTab.document.open();
                 newTab.document.write(htmlContent);
                 newTab.document.close();
-            } else {
-                alert("Pop-up blocked! Please allow pop-ups for CheddarOS.");
-            }
+            } else { alert("Pop-up blocked!"); }
             resetOriginalPage();
-        } catch (err) {
-            console.error("Login failed:", err);
-            resetOriginalPage();
-        }
+        } catch (err) { resetOriginalPage(); }
     }
 
     function showError(message) {
@@ -237,17 +228,8 @@
         }, 300);
     }
 
-    btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        handleLogin();
-    });
-
-    passInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            handleLogin();
-        }
-    });
+    btn.addEventListener('click', (e) => { e.preventDefault(); handleLogin(); });
+    passInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); handleLogin(); } });
 </script>
 </body>
 </html>
