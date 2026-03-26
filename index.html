@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RESTRICTED!</title>
+    <title>ced!</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0b57d0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://framerusercontent.com/images/3m7N9o9f2zN4B9X4z7Z4z7Z4z7.png">
+    
     <link rel="icon" href="https://framerusercontent.com/images/3m7N9o9f2zN4B9X4z7Z4z7Z4z7.png">
     <style>
         * { box-sizing: border-box; }
@@ -17,7 +24,6 @@
             height: 100vh;
         }
         
-        /* Full screen blocked overlay - Fixed to remove all white space */
         #blocked-overlay {
             display: none;
             position: fixed;
@@ -25,7 +31,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: #000000; /* Changed to black to ensure no white bleed */
+            background-color: #000000;
             z-index: 9999;
             margin: 0;
             padding: 0;
@@ -35,10 +41,9 @@
             width: 100%;
             height: 100%;
             display: block;
-            object-fit: fill; /* This forces the image to stretch to the corners */
+            object-fit: fill;
         }
 
-        /* Original Styles */
         .loading-bar { 
             position: absolute; 
             top: 0; 
@@ -159,14 +164,12 @@
     const blockedOverlay = document.getElementById('blocked-overlay');
     const mainViewport = document.getElementById('main-viewport');
 
-    // Toggle this to false to see the login page
     const disabled = false; 
-    const string1 = "\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x61\x77\x2e\x67\x69\x74\x68\x75\x62\x75\x73\x65\x72\x63\x6f\x6e\x74\x65\x6e\x74\x2e\x63\x6f\x6d\x2f\x66\x61\x69\x6c\x65\x64\x72\x69\x66\x6c\x65\x2f\x6d\x61\x74\x68\x2f\x6d\x61\x69\x6e\x2f\x69\x6e\x64\x65\x78\x2e\x68\x74\x6d\x6c";
+    const string1 = "\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x61\x77\x2e\x67\x69\x74\x68\x75\x62\x75\x73\x65\x72\x63\x6f\x6e\x74\x65\x6e\x74\x2e\x63\x6f\x6d\x2f\x66\x61\x69\x6c\x65\x64\x72\x69\x66\x6c\x65\x2f\x6d\x61\x74\x68\x2f\x6d\x61\x69\x6e\x2f\x69\x6e\x64\x65\x78\x2e\x68\x74\x6d\x6l";
     
     const p1 = "\x36\x37\x6d\x61\x6e\x67\x6f";
     const p2 = "\x36\x37\x6d\x61\x6e\x67\x6f";
 
-    // Immediate check for disabled state
     if (disabled) {
         blockedOverlay.style.display = 'block';
         mainViewport.style.display = 'none';
@@ -230,6 +233,15 @@
 
     btn.addEventListener('click', (e) => { e.preventDefault(); handleLogin(); });
     passInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); handleLogin(); } });
+
+    // --- PWA Service Worker Registration ---
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('PWA Service Worker registered'))
+                .catch(err => console.log('Service Worker registration failed', err));
+        });
+    }
 </script>
 </body>
 </html>
